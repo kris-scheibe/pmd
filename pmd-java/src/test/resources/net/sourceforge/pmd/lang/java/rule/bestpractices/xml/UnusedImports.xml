@@ -211,6 +211,96 @@ public class Foo {
     </test-code>
 
     <test-code>
+        <description>on-demand import used in a javadoc @linkplain tag only</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+import java.util.*;
+
+public class Foo {
+    /**
+     * {@linkplain  List list}
+     */
+    public void test() {}
+}
+     ]]></code>
+    </test-code>
+
+    <test-code>
+        <description>on-demand import used in a javadoc @link tag only</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+import java.util.*;
+
+public class Foo {
+    /**
+     * {@link  LinkedList}
+     */
+    public void test() {}
+}
+     ]]></code>
+    </test-code>
+
+    <test-code>
+        <description>on-demand import used in a javadoc @link tag with description only</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+import java.util.*;
+
+public class Foo {
+    /**
+     * {@link  ArrayList  arraylist}
+     */
+    public void test() {}
+}
+     ]]></code>
+    </test-code>
+
+    <test-code>
+        <description>on-demand import used in a javadoc @value tag only</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+import java.util.*;
+
+public class Foo {
+    /**
+     * {@value  Calendar#DATE}
+     */
+    public void test() {}
+}
+     ]]></code>
+    </test-code>
+
+    <test-code>
+        <description>on-demand import used in a javadoc @see tag only</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+import java.util.*;
+
+public class Foo {
+    /**
+     * @see List
+     */
+    public void test() {}
+}
+     ]]></code>
+    </test-code>
+
+    <test-code>
+        <description>on-demand import used in a javadoc @throws tag only</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+import java.util.*;
+
+public class Foo {
+    /**
+     * @throws NoSuchElementException no such element
+     */
+    public void test() {}
+}
+     ]]></code>
+    </test-code>
+
+    <test-code>
         <description>#1280 False Positive in UnusedImports when import used in javadoc</description>
         <expected-problems>0</expected-problems>
         <code><![CDATA[

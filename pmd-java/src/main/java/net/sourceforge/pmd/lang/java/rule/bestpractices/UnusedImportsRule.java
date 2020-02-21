@@ -56,7 +56,7 @@ public class UnusedImportsRule extends AbstractJavaRule {
     public Object visit(ASTCompilationUnit node, Object data) {
         imports.clear();
         super.visit(node, data);
-        visitComments(node);
+        visitComments(node, data);
 
         /*
          * special handling for Bug 2606609 : False "UnusedImports" positive in
@@ -72,7 +72,7 @@ public class UnusedImportsRule extends AbstractJavaRule {
         return data;
     }
 
-    private void visitComments(ASTCompilationUnit node) {
+    private void visitComments(ASTCompilationUnit node, Object data) {
         if (imports.isEmpty()) {
             return;
         }
@@ -86,7 +86,18 @@ public class UnusedImportsRule extends AbstractJavaRule {
                     String s = m.group(1);
 
                     if (s != null) { // may be null for "@see #" and "@link #"
-                        imports.remove(new ImportWrapper(s, s, new DummyJavaNode(-1)));
+                        if (!imports.remove(new ImportWrapper(s, s, new DummyJavaNode(-1)))) {
+                            if (node.getClassTypeResolver() != null) {
+                                // construct a Name node and use the type-resolver on it
+                                final ASTName className = new ASTName(-1);
+                                className.setScope(node.getScope());
+                                className.setImage(s);
+                                node.getClassTypeResolver().visit(className, data);
+                                if (className.getType() != null) {
+                                    check(className);
+                                }
+                            }
+                        }
                     }
 
                     if (m.groupCount() > 1) {
